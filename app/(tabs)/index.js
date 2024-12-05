@@ -57,21 +57,21 @@ export default function Home() {
       name: 'Badminton Racket',
       price: '¥15/hr',
       rating: 4.8,
-      image: require('../assets/equipment/badminton-racket.jpg'),
+      image: require('../../assets/equipment/badminton-racket.jpg'),
       sportType: 'badminton'
     },
     { 
       name: 'Tennis Racket',
       price: '¥20/hr',
       rating: 4.6,
-      image: require('../assets/equipment/tennis-racket.jpg'),
+      image: require('../../assets/equipment/tennis-racket.jpg'),
       sportType: 'tennis'
     },
     { 
       name: 'Basketball',
       price: '¥10/hr',
       rating: 4.9,
-      image: require('../assets/equipment/basketball.jpg'),
+      image: require('../../assets/equipment/basketball.jpg'),
       sportType: 'basketball'
     }
   ];
@@ -373,29 +373,7 @@ export default function Home() {
         </View>
       </ScrollView>
 
-      {/* Bottom Navigation */}
-      <BlurView intensity={80} tint="light" style={styles.bottomNav}>
-        {[
-          { icon: 'home', text: 'Home', route: '/', active: true },
-          { icon: 'view-dashboard', text: 'Dashboard', route: '/dashboard' },
-          { icon: 'compass', text: 'Explore', route: '/explore' },
-          { icon: 'chat', text: 'Chat', route: '/chat' },
-          { icon: 'account', text: 'Profile', route: '/profile' }
-        ].map((item, index) => (
-          <Link key={index} href={item.route} asChild>
-            <TouchableOpacity style={styles.navItem}>
-              <MaterialCommunityIcons 
-                name={item.icon} 
-                size={24} 
-                color={item.active ? PRIMARY_GREEN : '#666'} 
-              />
-              <Text style={[styles.navText, item.active && styles.activeNavText]}>
-                {item.text}
-              </Text>
-            </TouchableOpacity>
-          </Link>
-        ))}
-      </BlurView>
+
     </SafeAreaView>
   );
 }
@@ -793,24 +771,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: PRIMARY_GREEN,
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.1)',
-  },
-  navItem: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  navText: {
-    fontSize: 12,
-    color: '#666',
-  },
-  activeNavText: {
-    color: PRIMARY_GREEN,
-    fontWeight: '500',
   },
 });
