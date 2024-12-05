@@ -244,10 +244,22 @@ export default function Home() {
 
         {/* Equipment Rental */}
         <View style={styles.rentalSection}>
-          <Text style={styles.sectionTitle}>Equipment Rental</Text>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Equipment Rental</Text>
+            <Link href="/equipment" asChild>
+              <TouchableOpacity style={styles.seeAllButton}>
+                <Text style={styles.seeAllText}>See All</Text>
+                <Ionicons name="arrow-forward" size={20} color={PRIMARY_GREEN} />
+              </TouchableOpacity>
+            </Link>
+          </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {equipmentRental.map((item, index) => (
-              <TouchableOpacity key={index} style={styles.rentalCard}>
+              <TouchableOpacity 
+                key={index} 
+                style={styles.rentalCard}
+                onPress={() => router.push('/equipment')}
+              >
                 <ImageBackground
                   source={item.image}
                   style={styles.rentalBackground}
