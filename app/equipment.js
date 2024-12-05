@@ -13,7 +13,7 @@ import {
   Modal,
   Dimensions,
   Animated,
-  // Alert
+  Alert
 } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -55,9 +55,55 @@ const EQUIPMENT_DATA = {
       details: 'Professional grade badminton racket, perfect for offensive players',
       available: 3
     },
-    // ... other badminton equipment
+    {
+      id: 'bd2',
+      name: 'Lining N7II',
+      price: 20,
+      deposit: 150,
+      rating: 4.6,
+      reviews: 89,
+      image: require('../assets/equipment/badminton-racket-mid.jpg'),
+      details: 'Mid-range racket suitable for intermediate players',
+      available: 5
+    },
+    {
+      id: 'bd3',
+      name: 'Starter Racket Set',
+      price: 15,
+      deposit: 100,
+      rating: 4.5,
+      reviews: 156,
+      image: require('../assets/equipment/badminton-racket-basic.jpg'),
+      details: 'Perfect for beginners, includes 3 shuttlecocks',
+      available: 8
+    }
   ],
-  // ... other categories
+  tennis: [
+    {
+      id: 'tn1',
+      name: 'Wilson Pro Staff RF97',
+      price: 30,
+      deposit: 300,
+      rating: 4.9,
+      reviews: 92,
+      image: require('../assets/equipment/tennis-racket-pro.jpg'),
+      details: 'Professional tennis racket, endorsed by top players',
+      available: 2
+    }
+  ],
+  basketball: [
+    {
+      id: 'bb1',
+      name: 'Spalding NBA Official',
+      price: 15,
+      deposit: 100,
+      rating: 4.7,
+      reviews: 178,
+      image: require('../assets/equipment/basketball-pro.jpg'),
+      details: 'Official size and weight basketball',
+      available: 6
+    }
+  ]
 };
 
 export default function EquipmentRental() {
