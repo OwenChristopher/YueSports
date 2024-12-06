@@ -166,7 +166,7 @@ export default function Community() {
     {
       id: 2,
       name: "Mike Liu",
-      avatar: require('../assets/avatars/avatar2.jpg'),
+      avatar: require('../assets/avatars/avatarX.jpg'),
       isOnline: true,
       isPlaying: false,
       lastActive: "Now"
@@ -284,10 +284,12 @@ export default function Community() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Friends</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
-              <Text style={styles.seeAllText}>See All</Text>
-              <Ionicons name="arrow-forward" size={20} color={PRIMARY_GREEN} />
-            </TouchableOpacity>
+            <Link href="/(tabs)/explore?tab=buddies" asChild>
+              <TouchableOpacity style={styles.seeAllButton}>
+                <Text style={styles.seeAllText}>See All</Text>
+                <Ionicons name="arrow-forward" size={20} color={PRIMARY_GREEN} />
+              </TouchableOpacity>
+            </Link>
           </View>
           <View style={styles.friendsList}>
             {friends.map(friend => (
