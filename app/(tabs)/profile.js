@@ -7,26 +7,27 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  Image,
   Platform,
   StatusBar,
   Animated,
   Dimensions,
-  Modal,
-  Image
+  Modal
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import ProfileStatistics from '../../components/ProfileStatistics'; // Importing the component
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const PRIMARY_GREEN = '#2e7d32';
 const DARK_GREEN = '#1a472a';
-const LIGHT_GREEN = '#4caf50';
 const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 90 : 70;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
+// Mock user data
 const USER_DATA = {
   id: '7',
   name: "Owen Christopher Tjahyadi",
@@ -35,7 +36,6 @@ const USER_DATA = {
   location: "Taicang, China",
   joinDate: "Joined March 2024",
   isPremium: false,
-  // Now including all titles the user has, including the ones equipped by the profile header
   titles: ["Weekend Warrior", "Rising Star", "Badminton Teacher", "GOAT-ed Full Stack Dev"],
   sports: [
     {
@@ -111,34 +111,6 @@ const ACHIEVEMENTS = {
     icon: 'trending-up',
     color: '#2196F3',
     label: 'Rising Star'
-  }
-};
-
-const TIERS = {
-  diamond: {
-    name: "Diamond",
-    color: "#3F51B5",
-    minPoints: 2500
-  },
-  platinum: {
-    name: "Platinum",
-    color: "#9C27B0",
-    minPoints: 2000
-  },
-  gold: {
-    name: "Gold",
-    color: "#FFC107",
-    minPoints: 1500
-  },
-  silver: {
-    name: "Silver",
-    color: "#9E9E9E",
-    minPoints: 1000
-  },
-  bronze: {
-    name: "Bronze",
-    color: "#795548",
-    minPoints: 500
   }
 };
 
@@ -346,7 +318,6 @@ const TitleBadge = React.memo(({ title, icon, gradient }) => (
   </LinearGradient>
 ));
 
-// A simple TitleChip for user-level titles
 const TitleChip = React.memo(({ title }) => (
   <View style={styles.titleChip}>
     <MaterialCommunityIcons name="star" size={16} color="#FFD700" />
@@ -399,11 +370,6 @@ export default function Profile() {
     extrapolateRight: 'clamp'
   });
 
-  const totalMatches = user.statistics.totalMatches;
-  const totalWins = user.statistics.totalWins;
-  const totalLost = totalMatches - totalWins;
-  const mostPlayedWith = "John Doe"; // Placeholder value
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={DARK_GREEN} />
@@ -446,7 +412,7 @@ export default function Profile() {
             <View style={styles.profileInfo}>
               <Text style={styles.profileName}>{user.name}</Text>
               
-              {/* Equipped Titles Badges (like current role badges) */}
+              {/* Equipped Titles Badges */}
               <View style={styles.titleBadges}>
                 <TitleBadge
                   title="Badminton Teacher"
@@ -509,7 +475,7 @@ export default function Profile() {
           { useNativeDriver: false }
         )}
       >
-        {/* Titles Section (now includes all titles including Badminton Teacher and GOAT-ed Full Stack Dev) */}
+        {/* Titles Section */}
         {user.titles && user.titles.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Titles</Text>
@@ -534,7 +500,7 @@ export default function Profile() {
           ))}
         </View>
 
-        {/* Statistics Section */}
+        {/* Statistics Section (Integrated ProfileStatistics) */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Statistics</Text>
@@ -548,40 +514,11 @@ export default function Profile() {
               </TouchableOpacity>
             )}
           </View>
-          {canViewDetailedStats ? (
-            <View style={styles.statsContainer}>
-              <Text style={styles.statDetailText}>Matches Played: {totalMatches}</Text>
-              <Text style={styles.statDetailText}>Matches Won: {totalWins}</Text>
-              <Text style={styles.statDetailText}>Matches Lost: {totalLost}</Text>
-              <Text style={styles.statDetailText}>Most Played With: {mostPlayedWith}</Text>
-              {/* Additional detailed stats if needed */}
-            </View>
-          ) : (
-            <View style={styles.statsContainer}>
-              {/* Show two stats unblurred */}
-              <Text style={styles.statDetailText}>Matches Played: {totalMatches}</Text>
-              <Text style={styles.statDetailText}>Matches Won: {totalWins}</Text>
-
-              {/* Two stats that are blurred out */}
-              <View style={styles.blurredStatsWrapper}>
-                <Text style={styles.statDetailText}>Matches Lost: {totalLost}</Text>
-                <Text style={styles.statDetailText}>Most Played With: {mostPlayedWith}</Text>
-
-                {/* Blur overlay */}
-                <BlurView intensity={50} style={styles.statsBlurOverlay} />
-              </View>
-
-              <TouchableOpacity 
-                style={[styles.unlockButton, { marginTop: 16 }]}
-                onPress={() => setShowPremiumModal(true)}
-              >
-                <MaterialCommunityIcons name="lock" size={20} color={PRIMARY_GREEN} />
-                <Text style={styles.unlockButtonText}>
-                  Unlock Detailed Statistics
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          <ProfileStatistics 
+            statistics={user.statistics}
+            canViewDetailedStats={canViewDetailedStats}
+            onUnlockPress={() => setShowPremiumModal(true)}
+          />
         </View>
 
         {/* Recent Activities */}
@@ -1063,17 +1000,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  statDetailText: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 8,
-  },
-  statsContainer: {
-    position: 'relative',
-    padding: 16,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 12,
-  },
   titlesRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -1095,11 +1021,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: DARK_GREEN,
-  },
-  blurredStatsWrapper: {
-    position: 'relative',
-  },
-  statsBlurOverlay: {
-    ...StyleSheet.absoluteFillObject,
   },
 });
