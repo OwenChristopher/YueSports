@@ -80,7 +80,7 @@ export default function Home() {
     { icon: 'account-multiple', text: 'Community', route: '/community' },
     { icon: 'timer', text: 'Sparring', route: '/sparring' },
     { icon: 'medal', text: 'Leaderboard', route: '/leaderboard' },
-    { icon: 'trophy', text: 'Competition', route: '/competition' }
+    { icon: 'trophy', text: 'Competition', route: '/competitions' }
   ];
 
   const upcomingEvents = [
