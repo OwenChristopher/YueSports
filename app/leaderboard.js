@@ -1,5 +1,3 @@
-// app/leaderboard.js
-
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { 
   StyleSheet, 
@@ -21,6 +19,7 @@ import { Link, useRouter } from 'expo-router';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import RewardsModal from '../components/RewardsModal';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const PRIMARY_GREEN = '#2e7d32';
@@ -314,7 +313,6 @@ const ProgressBar = React.memo(({ current, max, label }) => {
   );
 });
 
-// New TopThreePlayers component
 const TopThreePlayers = React.memo(({ players, onPress }) => {
   const [first, second, third] = players;
 
@@ -368,7 +366,6 @@ const TopThreePlayers = React.memo(({ players, onPress }) => {
   );
 });
 
-// Define SeasonProgress only once
 const SeasonProgress = ({ season, userTier }) => {
   const endDate = new Date(season.endDate);
   const currentDate = new Date();
@@ -552,7 +549,7 @@ export default function Leaderboard() {
       setShowUpgradeModal(true);
       return;
     }
-    
+
     router.push({
       pathname: '/profile/[id]',
       params: { id: player.id }
@@ -686,9 +683,9 @@ export default function Leaderboard() {
                   <Text style={styles.priceText}>¥29.99/month</Text>
                 </LinearGradient>
               </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={styles.closeButton} 
+
+              <TouchableOpacity
+                style={styles.closeButton}
                 onPress={() => setShowUpgradeModal(false)}
               >
                 <Text style={styles.closeButtonText}>Maybe Later</Text>
@@ -739,7 +736,7 @@ export default function Leaderboard() {
             ))}
           </ScrollView>
 
-          <CategorySelector 
+          <CategorySelector
             category={selectedCategory}
             onSelect={handleCategorySelect}
           />
@@ -794,38 +791,13 @@ export default function Leaderboard() {
 
       {renderPremiumModal()}
 
-      {/* Rewards Modal */}
-      <Modal
-        visible={showRewardsModal}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setShowRewardsModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <BlurView intensity={50} style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Rewards</Text>
-            <ScrollView style={styles.rewardsScroll}>
-              <Text style={styles.sectionTitle}>Top 3 Players</Text>
-              {topThreePlayers.map((player) => (
-                <View key={player.id} style={styles.rewardItem}>
-                  <MaterialCommunityIcons name="trophy-outline" size={20} color="#FFD700" />
-                  <Text style={styles.rewardText}>{player.name} - Equipment/Voucher</Text>
-                </View>
-              ))}
-              <Text style={styles.sectionTitle}>Ranks 4 and Below</Text>
-              {otherPlayers.map((player) => (
-                <View key={player.id} style={styles.rewardItem}>
-                  <MaterialCommunityIcons name="currency-usd" size={20} color={PRIMARY_GREEN} />
-                  <Text style={styles.rewardText}>{player.name} - {player.points} Points</Text>
-                </View>
-              ))}
-            </ScrollView>
-            <TouchableOpacity onPress={() => setShowRewardsModal(false)}>
-              <Text style={styles.modalCloseText}>Close</Text>
-            </TouchableOpacity>
-          </BlurView>
-        </View>
-      </Modal>
+      {showRewardsModal && (
+        <RewardsModal
+          season={CURRENT_SEASON}
+          visible={showRewardsModal}
+          onClose={() => setShowRewardsModal(false)}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -1325,23 +1297,5 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 16,
     fontWeight: '500',
-  },
-  rewardsScroll: {
-    width: '100%',
-    marginBottom: 12,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: DARK_GREEN,
-    marginBottom: 8,
-    marginTop: 12,
-  },
-  modalCloseText: {
-    fontSize: 14,
-    color: PRIMARY_GREEN,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginTop: 12,
   },
 });
