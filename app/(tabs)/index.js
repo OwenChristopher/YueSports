@@ -1,5 +1,5 @@
 // app/index.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { 
   StyleSheet, 
@@ -105,7 +105,7 @@ export default function Home() {
   // Header animation
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 100],
-    outputRange: [120, 80],
+    outputRange: [160, 100], // Increased initial height for more green area
     extrapolate: 'clamp'
   });
 
@@ -166,7 +166,7 @@ export default function Home() {
       </Animated.View>
 
       <ScrollView 
-        style={styles.content}
+        style={[styles.content]}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -372,8 +372,6 @@ export default function Home() {
           </ScrollView>
         </View>
       </ScrollView>
-
-
     </SafeAreaView>
   );
 }
@@ -392,6 +390,7 @@ const styles = StyleSheet.create({
   },
   headerGradient: {
     flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 44 : 24,
     paddingHorizontal: 16,
     paddingBottom: 16,
     justifyContent: 'space-between',
@@ -452,7 +451,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingTop: 120,
+    paddingTop: 140, // Increased this so content appears lower, showing more green
   },
   sportsForYou: {
     padding: 16,
@@ -565,6 +564,21 @@ const styles = StyleSheet.create({
   rentalSection: {
     padding: 16,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  seeAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  seeAllText: {
+    color: PRIMARY_GREEN,
+    fontWeight: '600',
+  },
   rentalCard: {
     width: 160,
     height: 200,
@@ -655,21 +669,6 @@ const styles = StyleSheet.create({
   },
   eventsSection: {
     padding: 16,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  seeAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  seeAllText: {
-    color: PRIMARY_GREEN,
-    fontWeight: '600',
   },
   eventCard: {
     width: SCREEN_WIDTH * 0.85,
